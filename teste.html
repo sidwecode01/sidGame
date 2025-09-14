@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <canvas class="bg-blue-500"></canvas>
+
+<script>
+        const canvas = document.querySelector('canvas')
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+
+        const c = canvas.getContext('2d')
+        // c.fillStyle = 'rgba(255, 0, 0, 0.5)'
+        // c.fillRect(100, 100, 100, 100)
+        // c.fillRect(200, 300, 100, 100)
+        // c.fillRect(300, 400, 100, 100)
+        // c.fillRect(400, 500, 100, 100)
+        // c.fillRect(550, 50, 100, 100)
+        // c.fillRect(600, 300, 100, 100)
+        // c.fillText('je suis la', 100,80 ,200)
+        // console.log(c);
+
+        // line
+
+        // c.beginPath()
+        // c.moveTo(100, 300)
+        // c.lineTo(300, 600)
+        // c.lineTo(600, 300)
+        // c.strokeStyle = 'white'
+        // // c.closePath()
+        // c.stroke()
+
+
+
+        // for(let i = 1; i <=100; i++){
+        //      c.beginPath()
+        //      c.strokeStyle = 'white'
+        //     let x = Math.random() * window.innerWidth
+        //     let y = Math.random() * window.innerHeight
+        //      c.arc(x, y, 30,0,  Math.PI * 2, false)
+        //      c.stroke()
+        // }
+        
+        function Circle (x, y, radius, dx, dy){
+            this.x = x
+            this.y = y
+            this.radius = radius
+            this.dx = dx
+            this.dy = dy
+
+             this.drawCircle = function (){
+
+                c.beginPath()
+                c.strokeStyle = 'white'
+                c.arc(this.x, this.y, this.radius,0,  Math.PI * 2, false)
+                c.stroke()
+                c.fill()
+            }
+
+            this.updatePosition = function(){
+
+                 if(this.x + this.radius > innerWidth || this.x - this.radius < 0){
+                    this.dx = -this.dx
+                 }
+
+                if (this.y + this.radius > innerHeight || this.y -this.radius < 0){
+                   this.dy = -this.dy
+                 }
+
+                this.x +=this.dx
+                this.y += this.dy
+                this.drawCircle()
+            }
+           
+            
+        }
+
+
+        let arrayCircle = []
+
+        for (let i=0 ; i < 100; i++ ){
+            let x = Math.random() * innerWidth
+            let y = Math.random() * innerHeight
+            let radius = 30
+            let dx =(Math.random() - 0.5) * 4
+            let dy = (Math.random() - 0.5) * 4
+
+            arrayCircle.push(new Circle(x,y,radius,dx,dy)) 
+
+        }
+        
+        
+       
+        function animeSid(){
+             requestAnimationFrame(animeSid)
+             c.clearRect(0, 0 , innerWidth, innerHeight)
+            
+             for (let i = 0 ; i < arrayCircle.length; i++ ){
+                arrayCircle[i].updatePosition()
+                
+                
+            
+               
+             }
+        }
+            //    animeSid()
+
+    </script>
+</body>
+</html>

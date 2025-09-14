@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jump avec Victoire</title>
+  <style>
+    canvas {
+      background: #d0f0c0;
+      display: block;
+      margin: auto;
+      border: 2px solid #444;
+    }
+    #inputZone {
+      text-align: center;
+      margin-top: 20px;
+    }
+    input {
+      padding: 10px;
+      font-size: 18px;
+      width: 300px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-left: 10px;
+    }
+    #victoryMessage {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="game" width="800" height="800"></canvas>
+
+<div id="inputZone">
+  <input type="text" id="wordInput" placeholder="Tape le mot de la branche..." />
+  <button onclick="validateWord()">Valider</button>
+</div>
+
+<div id="victoryMessage"></div>
+
+<script>
+  const canvas = document.getElementById("game");
+  const ctx = canvas.getContext("2d");
+
+  const playerImage = new Image();
+  playerImage.src = "image/player.png";
+
+  const columnsX = [100, 250, 400, 550];
+  const words = ["chat", "arbre", "soleil", "nuage", "pluie", "feuille", "vent", "terre", "lumière", "branche"];
+  const branches = [];
+  let y = 500;
+
+  for (let i = 0; i < 10; i++) {
+    const col = Math.floor(Math.random() * columnsX.length);
+    const word = words[i % words.length];
+    branches.push({
+      x: columnsX[col],
+      y: y,
+      width: 100,
+      height: 10,
+      word: word
+    });
+    y -= 30;
+  }
+
+  let player = {
+    x: branches[0].x,
+    y: branches[0].y - 50,
+    width: 50,
+    height: 50,
+    velocityY: 0,
+    jumping: false
+  };
+
+  const gravity = 1.5;
+  const jumpStrength = -15;
+  let currentBranch = 0;
+  let startTime = null;
+
+  function drawBranches() {
+    ctx.fillStyle = "brown";
+    ctx.font = "16px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "bottom";
+
+    branches.forEach(branch => {
+      ctx.fillRect(branch.x, branch.y, branch.width, branch.height);
+      ctx.fillStyle = "black";
+      ctx.fillText(branch.word, branch.x + branch.width / 2, branch.y - 5);
+      ctx.fillStyle = "brown";
+    });
+  }
+
+  function drawPlayer() {
+    ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+  }
+
+  function jumpToNextBranch() {
+    if (currentBranch < branches.length - 1) {
+      currentBranch++;
+      const next = branches[currentBranch];
+      player.velocityY = jumpStrength;
+      player.jumping = true;
+
+      const dx = (next.x - player.x) / 20;
+
+      const jumpInterval = setInterval(() => {
+        player.x += dx;
+        player.y += player.velocityY;
+        player.velocityY += gravity;
+
+        if (player.y >= next.y - player.height) {
+          player.y = next.y - player.height;
+          player.x = next.x;
+          player.velocityY = 0;
+          player.jumping = false;
+          clearInterval(jumpInterval);
+
+          // Si dernière branche atteinte
+          if (currentBranch === branches.length - 1) {
+            const endTime = Date.now();
+            const duration = ((endTime - startTime) / 1000).toFixed(2);
+            document.getElementById("victoryMessage").textContent =
+              `🏆 Bravo ! Tu as terminé le jeu en ${duration} secondes.`;
+            document.getElementById("wordInput").disabled = true;
+          }
+        }
+      }, 20);
+    }
+  }
+
+  function validateWord() {
+    const input = document.getElementById("wordInput").value.trim().toLowerCase();
+    const nextBranch = branches[currentBranch + 1];
+    if (nextBranch && input === nextBranch.word.toLowerCase() && !player.jumping) {
+      document.getElementById("wordInput").value = "";
+      jumpToNextBranch();
+    } else {
+      alert("Mot incorrect ou déjà en saut !");
+    }
+  }
+
+  function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBranches();
+    drawPlayer();
+    requestAnimationFrame(gameLoop);
+  }
+
+  playerImage.onload = () => {
+    startTime = Date.now();
+    gameLoop();
+  };
+</script>
+</body>
+</html>

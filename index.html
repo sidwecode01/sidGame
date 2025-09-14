@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jump de Branche</title>
+  <style>
+    canvas {
+      background: #d0f0c0;
+      display: block;
+      margin: auto;
+      border: 2px solid #444;
+    }
+  </style>
+</head>
+<body>
+<canvas id="game"  ></canvas>
+
+<script>
+  const canvas = document.getElementById("game");
+  canvas.width = innerWidth
+  canvas.height = innerHeight
+  const ctx = canvas.getContext("2d");
+
+  // Chargement de l'image du joueur
+  const playerImage = new Image();
+  playerImage.src = "image/player.png"; // Assure-toi que ce chemin est correct
+
+  // Position et état du joueur
+  let player = {
+    x: 300,
+    y: 550,
+    width: 90,
+    height: 150,
+    velocityY: 0,
+    jumping: false
+  };
+
+  const gravity = 1.5;
+  const jumpStrength = -15;
+  let currentBranch = 0;
+
+  // Branches du jeu
+  const branches = [
+    { x: 300, y: 700, width: 100, height: 10 },
+    { x: 450, y: 650, width: 100, height: 10 },
+    { x: 600, y: 600, width: 100, height: 10 },
+    { x: 750, y: 550, width: 100, height: 10 },
+    { x: 900, y: 500, width: 100, height: 10 },
+    { x: 1050, y: 450, width: 100, height: 10 },
+    { x: 1200, y: 400, width: 100, height: 10 },
+    { x: 1350, y: 350, width: 100, height: 10 },
+    { x: 1500, y: 300, width: 100, height: 10 },
+    // { x: 1650, y: 250, width: 100, height: 10 },
+  ];
+
+  // Dessiner les branches
+  function drawBranches() {
+    ctx.fillStyle = "brown";
+    branches.forEach(branch => {
+      ctx.fillRect(branch.x, branch.y, branch.width, branch.height);
+    });
+  }
+
+  // Dessiner le joueur (image)
+  function drawPlayer() {
+    ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+  }
+
+  // Sauter vers la branche suivante
+  function jumpToNextBranch() {
+    if (currentBranch < branches.length - 1) {
+      currentBranch++;
+      const next = branches[currentBranch];
+      player.velocityY = jumpStrength;
+      player.jumping = true;
+
+      const jumpInterval = setInterval(() => {
+        player.y += player.velocityY;
+        player.velocityY += gravity;
+
+        if (player.y >= next.y - player.height) {
+          player.y = next.y - player.height;
+          player.x = next.x;
+          player.velocityY = 0;
+          player.jumping = false;
+          clearInterval(jumpInterval);
+        }
+      }, 20);
+    }
+  }
+
+  // Boucle de jeu
+  function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBranches();
+    drawPlayer();
+    requestAnimationFrame(gameLoop);
+  }
+
+  // Détection de la touche "Entrée"
+  document.addEventListener("keydown", e => {
+    if (e.code === "Enter" && !player.jumping) {
+      jumpToNextBranch();
+    }
+  });
+
+  // Lancer le jeu une fois l’image chargée
+  playerImage.onload = () => {
+    gameLoop();
+  };
+</script>
+</body>
+</html>
