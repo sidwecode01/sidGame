@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body >
+    <header class="bg-white shadow-sm">
+  <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+    <!-- Logo -->
+    <a href="#" class="text-xl font-bold text-blue-600">GAME <span class="text-yellow-300">YELLOW</span></a>
+    <!-- Desktop Navigation & CTA -->
+    <div class="hidden md:flex items-center space-x-6">
+      <a href="#" class="text-gray-600 hover:text-gray-900">Home</a>
+      <a href="#" class="text-gray-600 hover:text-gray-900">Features</a>
+      <a href="#" class="text-gray-600 hover:text-gray-900">Pricing</a>
+      <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out">Get Started</a>
+    </div>
+    <!-- Mobile Menu Button & CTA -->
+    <div class="md:hidden flex items-center">
+       <!-- Mobile CTA (optional, can also be inside the menu) -->
+       <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 ease-in-out inline-block mr-4">Get Started</a>
+       <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+       </button>
+    </div>
+  </nav>
+  <!-- Mobile Menu (hidden by default - add JS to toggle) -->
+  <div class="md:hidden hidden">
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-100">Home</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-100">Features</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-gray-100">Pricing</a>
+      <!-- You might want the CTA inside the mobile menu too/instead -->
+      <!-- <a href="#" class="block px-4 py-2 bg-blue-500 text-white text-center rounded-md mx-4 my-2 hover:bg-blue-600">Get Started</a> -->
+  </div>
+</header>
+<main>
+    
+  <div class="cloud"></div>
+  <div class="box2"></div>
+  <div id="moon"></div>
+  <div id="star-five"></div>
+  <canvas class="bg-[url('image/gameBackgound.png')] h-full object-cover w-full bg-cover bg-center" id="canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+
+    canvas.width = innerWidth
+    canvas.height = innerHeight
+    const playerImage = new Image()
+    playerImage.src = "image/player.png";
+
+
+    function drawPlayer() {
+    ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+  }
+   
+
+      function gameLoop() {
+     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlayer();
+    requestAnimationFrame(gameLoop);
+  }
+
+   playerImage.onload = () => {
+    
+    gameLoop();
+  };
+
+  </script>
+</div>
+</main>
+</body>
+</html>

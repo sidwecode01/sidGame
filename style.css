@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+ .box2 {
+  width: 200px;
+  height: 100px;
+  background: #ffffff;
+  opacity: 0.5;
+  border-radius: 50%;
+  position: absolute;
+  top: 20%;
+  left: -200px;
+  box-shadow: 50px 50px 10px 10px #ffffff, 100px 30px 10px 10px #ffffff; 
+  animation: moveCloud 60s infinite;
+  animation-delay: 0.2s;
+}
+
+
+ #moon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      box-shadow: 15px 15px 0 0 yellow;
+      position: absolute;
+      right: 50px;
+    }
+
+
+  
+    #star-five {
+      margin: 50px 0;
+      position: absolute; 
+      display: block;
+      color: yellow;
+      width: 0px;
+      height: 0px;
+      border-right: 100px solid transparent;
+      border-bottom: 70px solid yellow;
+      border-left: 100px solid transparent;
+      transform: rotate(35deg);
+    }
+    #star-five:before {
+      border-bottom: 80px solid yellow;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      position: absolute;
+      height: 0;
+      width: 0;
+      top: -45px;
+      left: -65px;
+      display: block;
+      content: '';
+      transform: rotate(-35deg);
+    }
+
+    #star-five:after {
+      position: absolute;
+      display: block;
+      color: yellow;
+      top: 3px;
+      left: -105px;
+      width: 0px;
+      height: 0px;
+      border-right: 100px solid transparent;
+      border-bottom: 70px solid yellow;
+      border-left: 100px solid transparent;
+      transform: rotate(-70deg);
+      content: '';
+    }
+
+.cloud {
+  width: 200px;
+  height: 100px;
+  background: #ffffff;
+  opacity: 0.4;
+  border-radius: 50%;
+  position: absolute;
+  top: 10%;
+  
+  box-shadow: 10px 50px 5px 0px #ffffff, 100px 20px 10px 10px #ffffff; 
+  animation: moveCloud 40s linear infinite;
+}
+
+@keyframes moveCloud {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(120vw);
+  }
+}
